@@ -1,0 +1,72 @@
+# clients/clientone.yaml - ALL client-specific content lives here.
+# FILL_IN = information still needed from the client (see CLIENT_SETUP_CHECKLIST.md).
+# Secrets are NEVER stored here: *_env entries are the NAMES of environment variables.
+client:
+  slug: clientone
+  name: Nishi's Solutions
+  industry: financial_education
+  business_description: "Nishi's Solutions is a financial education company that provides courses and resources to help individuals understand the stock market and make informed investment decisions."
+  target_audience: "Individuals interested in learning about the stock market and financial education."
+  default_country_code: "+91"
+  privacy_notice: "We are committed to protecting your privacy. Your information will be used to provide you with educational content and to contact you about our services. You can opt out at any time."         # client's approved privacy notice text (needs legal review)
+brand_voice:
+  tone: friendly, clear, educational
+funnel:
+  contact_capture: before_questions   # as in the flow diagram; use at_guide to ask name/phone later
+  guide_magnet_id: free_guide
+messages:                              # DRAFT wording - client/legal must approve before production
+  intro: "Hi! I'm the automated assistant for {client_name} (an AI, not a human). I can share a free learning guide and help you book a call with our team."
+  consent_prompt: "{privacy_notice}\n\nTo continue I need your permission to store the details you share (name, phone number, your answers), to message you here, and to let our team contact you. Tap 'I agree' to continue. You can reply STOP at any time."
+  consent_declined: "No problem - I won't store or send anything further. Send /start if you change your mind."
+  opt_out_ack: "Done - I won't message you again. Send /start any time if you want to come back."
+  ask_name: "Great, thanks! What's your name?"
+  ask_phone: "Nice to meet you, {name}. What's the best phone number for our team to reach you on? You can tap the button to share it or type it in."
+  invalid_name: "Sorry, I didn't catch a name there. What should I call you?"
+  invalid_phone: "That doesn't look like a valid phone number. Could you share it again, with the country code if it is not an Indian number?"
+  guide_intro: "Thanks, {name}! Here is your free learning guide. It is educational material only and not investment advice."
+  guide_unavailable: "Thanks, {name}! Our team will share your free guide with you shortly."
+  booking_offer: "Would you like a free call with our team to talk through the course and ask your questions?"
+  booking_link: "Great! Please pick a time that suits you here: {booking_url}\nOnce you book, our team will call you at your chosen time."
+  no_booking_ack: "No worries at all. I'll stay available here if you have questions, and I may send you a few helpful learning tips over the next days. Reply STOP any time to opt out."
+  booking_confirmed: "Your call is booked. Our team will phone you at the scheduled time. Thanks, {name}!"
+  already_booked: "You're all set - your call is booked and our team will phone you. Ask me anything in the meantime."
+  advice_deflection: "I'm an educational assistant, so I can't give personal recommendations about what to buy or sell. I'm happy to explain concepts, and our team can talk about the course on a call."
+  faq_fallback: "I don't have verified information on that, so I won't guess. I've passed your question to our team."
+  welcome_back: "Welcome back, {name}!"
+faqs:
+  - q: "What is the course fee?"
+    a: abc
+    keywords: [fee, fees, price, cost]
+  - q: "How long is the course?"
+    a: x months
+    keywords: [duration, long, weeks, months]
+  - q: "What topics does the course cover?"
+    a: The course covers a range of topics including stock market fundamentals, technical analysis, risk management, and investment strategies.
+    keywords: [syllabus, curriculum, topics, covers]
+qualification:
+  questions:
+    - { key: experience_level, prompt: "How would you describe your experience with the stock market so far - complete beginner, some experience, or experienced?" }
+    - { key: learning_goal, prompt: "What would you most like to learn or achieve through a course like this?" }
+    - { key: time_commitment, prompt: "Roughly how many hours a week could you set aside for learning?" }
+lead_magnets:
+  - { id: free_guide, title: "The Complete Guide to Trading", path_env: FREE_GUIDE_PATH }
+booking: { provider: calcom, url_env: BOOKING_URL }
+followups:
+  schedule:                            # days counted from the moment the free guide is delivered
+    - { day: 1, text: "Hi {name}, hope the guide was useful! Got any questions about it? Ask me here any time." }
+    - { day: 3, text: "Hi {name}, a quick learning tip: always understand the risks of any market concept before relying on it. Want to chat with our team about the course? {booking_url}" }
+    - { day: 7, text: "Hi {name}, just checking in. If you would like a free call with our team, you can pick a time here: {booking_url}. Reply STOP to opt out." }
+escalation: { notify_chat_id_env: SALES_NOTIFICATION_CHAT_ID }
+compliance:
+  profile: india_securities_education
+  legal_review_completed: false
+knowledge: { sources: [] }
+llm:                                   # free-form conversation (side questions, post-guide chat)
+  enabled: true                        # also needs LLM_PROVIDER + LLM_API_KEY + LLM_MODEL in the environment
+  allow_general_education: true        # needs legal approval; false = answer only from verified facts
+  max_tool_rounds: 3
+  history_messages: 10
+features: { followups: true }          # still needs FOLLOWUPS_ENABLED=true in the environment
+secrets:
+  telegram_bot_token_env: TELEGRAM_BOT_TOKEN
+  llm_api_key_env: LLM_API_KEY

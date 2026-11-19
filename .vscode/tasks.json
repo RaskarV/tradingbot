@@ -1,0 +1,19 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Run console simulator",
+			"type": "shell",
+			"command": "C:\\Users\\raska\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+			"args": [
+				"-m",
+				"app.main",
+				"console",
+				"--enable-followups"
+			],
+			"isBackground": true,
+			"problemMatcher": [],
+			"group": "build"
+		}
+	]
+}

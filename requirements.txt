@@ -1,0 +1,4 @@
+PyYAML>=6.0
+# Live Telegram adapter only (untested here):
+aiogram>=3.4,<4
+# Planned for Phase 1+: pydantic, fastapi, sqlalchemy, alembic, psycopg, uvicorn, pytest
